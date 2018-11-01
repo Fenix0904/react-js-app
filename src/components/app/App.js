@@ -1,5 +1,5 @@
 import React from "react";
-import Header from "../header";
+import Header from "../header/Header";
 import SearchPanel from "../search-panel/SearchPanel";
 import ItemStatusFilter from "../item-status-filter/ItemStatusFilter";
 import TodoList from "../todo-list/TodoList";
