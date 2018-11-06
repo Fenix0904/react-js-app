@@ -17,7 +17,8 @@ export default class App extends React.Component {
             this.createItem('Make Awesome App'),
             this.createItem('Have a lunch')
         ],
-        term: ""
+        term: "",
+        filter: "all"
     };
 
     deleteItem = (id) => {
@@ -77,22 +78,29 @@ export default class App extends React.Component {
 
     onSearchInputChanged = (e) => {
         this.setState({
-           term: e.target.value
+            term: e.target.value
         });
-        console.log(this.state.term);
+    };
+
+    onFilterChanged = (newFilter) => {
+        this.setState({
+            filter: newFilter
+        });
     };
 
     render() {
-        const {todoData, term} = this.state;
+        const {todoData, term, filter} = this.state;
         const done = todoData.filter((el) => el.done).length;
         const leftToDo = todoData.length - done;
-        const items = this.filterItems(todoData, term);
+        const items = this.findItems(this.filterItemsByStatus(todoData, filter), term);
         return (
             <div className="todo-app">
                 <Header toDo={leftToDo} done={done}/>
                 <div className="top-panel d-flex">
                     <SearchPanel onChange={this.onSearchInputChanged}/>
-                    <ItemStatusFilter/>
+                    <ItemStatusFilter
+                        filter={filter}
+                        onFilterChanged={this.onFilterChanged}/>
                 </div>
 
                 <TodoList
@@ -105,7 +113,17 @@ export default class App extends React.Component {
         )
     }
 
-    filterItems(arr, term) {
+    filterItemsByStatus = (items, status) => {
+        if (status === "all") {
+            return items;
+        } else if (status === "active") {
+            return items.filter((el) => !el.done);
+        } else if (status === "done") {
+            return items.filter((el) => el.done);
+        }
+    };
+
+    findItems(arr, term) {
         if (term.length === 0) {
             return arr;
         }
