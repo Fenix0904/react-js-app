@@ -62,19 +62,6 @@ export default class App extends React.Component {
         });
     };
 
-    toggleProperty(arr, id, prop) {
-        const index = arr.findIndex((el) => el.id === id);
-        const oldItem = arr[index];
-        const newItem = {
-            ...oldItem,
-            [prop]: !oldItem[prop]
-        };
-        return [
-            ...arr.slice(0, index),
-            newItem,
-            ...arr.slice(index + 1)
-        ];
-    }
 
     onSearchInputChanged = (e) => {
         this.setState({
@@ -128,6 +115,20 @@ export default class App extends React.Component {
             return arr;
         }
         return arr.filter((el) => el.label.toLowerCase().indexOf(term.toLowerCase()) > -1);
+    }
+
+    toggleProperty(arr, id, prop) {
+        const index = arr.findIndex((el) => el.id === id);
+        const oldItem = arr[index];
+        const newItem = {
+            ...oldItem,
+            [prop]: !oldItem[prop]
+        };
+        return [
+            ...arr.slice(0, index),
+            newItem,
+            ...arr.slice(index + 1)
+        ];
     }
 
     createItem(label, done = false, important = false) {
